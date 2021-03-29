@@ -118,3 +118,8 @@ variable "eksnode_name"{
   description= "Enter name for EKS node group"
   default="myeksnodegroup"
 }
+variable "instance_types"{
+  type=string
+  description="Enter instance type"
+  default="t3.medium"
+}

@@ -36,6 +36,7 @@ module "eks"{
   private_subnets     = module.vpc.private_subnets_id
   eksnode_role_arn = module.iam-node.eksnoderolearn
   eksnode_name=var.eksnode_name
+  instance_types=var.instance_types
   
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
