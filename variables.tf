@@ -119,7 +119,7 @@ variable "eksnode_name"{
   default="myeksnodegroup"
 }
 variable "instance_types"{
-  type=list
+  type=list(string)
   description="Enter instance type"
   default=["t3.medium"]
 }
