@@ -32,7 +32,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var 'instance_types=${params.INSTANCETYPE}''
+                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=INSTANCETYPE'
             }
         }
         stage('Apply the terraform code') {
@@ -42,7 +42,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var 'instance_types=${params.INSTANCETYPE}' -auto-approve'
+                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -auto-approve'
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){
