@@ -32,7 +32,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=INSTANCETYPE'
+                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE'
             }
         }
         stage('Apply the terraform code') {
