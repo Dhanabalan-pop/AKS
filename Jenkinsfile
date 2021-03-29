@@ -4,7 +4,7 @@ pipeline {
         string(name: 'EKSCLUSTERNAME', defaultValue: 'ekscluster', description: 'Enter Name for EKS Cluster')
         string(name: 'EKSNODENAME', defaultValue: 'eksnode', description: 'Enter name for EKS node group')
         string(name: 'TWORKSPACE', defaultValue: 'default', description: 'Enter Terraform workspace name')
-        string(name: 'INSTANCETYPE', defaultValue: 't3.medium', description: 'Enter Instance type')
+        string(name: 'INSTANCETYPE', defaultValue: '["t3.medium"]', description: 'Enter Instance type')
         booleanParam(name: 'destroy', defaultValue: true, description: '')
     }
     stages {
@@ -32,7 +32,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var 'instance_types=["$INSTANCETYPE"]''
+                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var 'instance_types=$INSTANCETYPE''
             }
         }
         stage('Apply the terraform code') {
@@ -42,7 +42,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var 'instance_types=["$INSTANCETYPE"]' -auto-approve'
+                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var 'instance_types=$INSTANCETYPE' -auto-approve'
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){
