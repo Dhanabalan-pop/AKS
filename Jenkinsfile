@@ -37,7 +37,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=PUBLICSUBNETCIDR -var private_subnets_cidr=PRIVATESUBNETCIDR'
+                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=$PUBLICSUBNETCIDR -var private_subnets_cidr=$PRIVATESUBNETCIDR'
             }
         }
         stage('Apply the terraform code') {
@@ -47,7 +47,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=PUBLICSUBNETCIDR -var private_subnets_cidr=PRIVATESUBNETCIDR -auto-approve'
+                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=$PUBLICSUBNETCIDR -var private_subnets_cidr=$PRIVATESUBNETCIDR -auto-approve'
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){
