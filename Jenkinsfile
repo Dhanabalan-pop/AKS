@@ -59,7 +59,7 @@ pipeline {
             steps {
                 sh 'terraform workspace select $TWORKSPACE'
                 sh 'terraform init'
-                sh 'terraform destroy -auto-approve'
+                sh 'terraform destroy $TWORKSPACE.out'
             }
         }
     }
