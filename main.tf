@@ -7,7 +7,7 @@ policy_arn2=var.policy_arn2
 }
 module "iam-node" {
 source = "./iam-node"
-keyname = var.key_name
+key_name = var.key_name
 role_name=var.eksnoderole
 policy_arn3=var.policy_arn3
 policy_arn4=var.policy_arn4
