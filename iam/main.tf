@@ -1,7 +1,3 @@
-resource "aws_key_pair" "key" {
-  key_name = var.keyname
-  public_key = var.publickey
-}
 resource "aws_iam_role" "eks_cluster" {
   name = var.role_name
   assume_role_policy=var.assume_role_policy

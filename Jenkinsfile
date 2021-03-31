@@ -2,9 +2,12 @@ pipeline {
     agent any
     parameters {
         string(name: 'EKSCLUSTERNAME', defaultValue: 'ekscluster', description: 'Enter Name for EKS Cluster')
+        string(name: 'EKSCLUSTERROLE', defaultValue: 'eksclusterrole', description: 'Enter Name for EKS Cluster role')
         string(name: 'EKSNODENAME', defaultValue: 'eksnode', description: 'Enter name for EKS node group')
+        string(name: 'EKSNODEROLE', defaultValue: 'eksnoderole', description: 'Enter Name for EKS Node grpup role')
         string(name: 'TWORKSPACE', defaultValue: 'default', description: 'Enter Terraform workspace name')
         string(name: 'INSTANCETYPE', defaultValue: '["t3.medium"]', description: 'Enter Instance type')
+        string(name: 'KEYNAME', defaultValue: 'key', description: 'Enter Name for your keypair')
         booleanParam(name: 'destroy', defaultValue: true, description: 'Select the checkbox if you want to destroy the infrastructure')
         booleanParam(name: 'existingvpc', defaultValue: true, description: 'Select the checkbox if you want to use existing vpc')
         text(name: 'EXISTINGSUBNETS', defaultValue: '["subnet-0024c97d","subnet-2fe2b763","subnet-98bd0af3"]', description: 'Enter existing subnet ID,3subnet is required')
@@ -37,7 +40,8 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=$PUBLICSUBNETCIDR -var private_subnets_cidr=$PRIVATESUBNETCIDR -out $TWORKSPACE.out'
+                sh 'terraform plan -var -key_name=$KEYNAME -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=$PUBLICSUBNETCIDR -var private_subnets_cidr=$PRIVATESUBNETCIDR -var eksclusterrole=$EKSCLUSTERROLE$TWORKSPACE eksnoderole=$EKSNODEROLE$TWORKSPACE -out $TWORKSPACE.out'
+                sh 'terraform show -no-color $TWORKSPACE.out > $TWORKSPACE.txt'
             }
         }
         stage('Apply the terraform code') {

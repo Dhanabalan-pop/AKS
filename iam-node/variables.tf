@@ -1,5 +1,4 @@
-variable "keyname" {}
-variable "publickey"{}
+variable "key_name" {}
 variable "role_name"{}
 variable "policy_arn3"{}
 variable "policy_arn4"{}

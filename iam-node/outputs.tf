@@ -14,3 +14,6 @@ output "policy3"{
     description = "EKS cluster node role policy3"
   value       = aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly
 }
+output "public_key"{
+  value = tls_private_key.example.public_key_openssh
+  }

@@ -1,14 +1,8 @@
-variable "keypair" {
-default="eks"
-}
-variable "keypair1" {
+variable "key_name" {
 default="eks1"
 }
 variable "aws_region" {
 default="us-east-2"
-}
-variable "publickey" {
-default="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9UpS02F4RjI4pa2nYNZ5vMwQwlVBO9VmFwuasn3b+0z/799X3P2Cbdl5peZ+YXiu0Gbsx0MjlzJUkQGC16sXvv0zxmSRZasziMdSKDzjn+NqVWjZeK4rZW9BOYT10YvMpn9lXl15LIdSKktN4reag67c1Su3F7oTPfM6nv21Pw7CH/RHBXlVB4drRwn6qOpHhiw2DEl8CMu0+2nWmy8Aci6W6RbWy029hvm/y6KWQHJclCnLMemM6x7O1vuonYGJRerY4+zSGwSJi9j8D7RQ2NgGv3MNCyRWW8zxwWvofkO54hQtjmfJ6lGb0QVZrMgUxSFTfFMshk7KjiA1kKPhDrAI9/JNlC1Fbml6Nh7SMlst/q+pkkvlNlttjcpHHigIybr4x46w+aKAm4nLFYNrx29pVl6hZDp5vPbyvP2RJPuiOOQGqy8SsGyHOZ67Zf58xkV9gJCHIRT7NhY+12srwfuFm8BDQjsqpYDxb4Lr0cce1O2BjETw+1s1u51k+Rw8= dhanabalan.r@VSPLBLRLT0317"
 }
 variable "eksclusterrole" {
 default="eksclusterrole"

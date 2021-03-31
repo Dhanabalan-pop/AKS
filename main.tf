@@ -1,7 +1,5 @@
 module "iam" {
 source = "./iam"
-keyname = var.keypair
-publickey = var.publickey
 role_name=var.eksclusterrole
 assume_role_policy = var.role
 policy_arn1=var.policy_arn1
@@ -9,8 +7,7 @@ policy_arn2=var.policy_arn2
 }
 module "iam-node" {
 source = "./iam-node"
-keyname = var.keypair1
-publickey = var.publickey
+keyname = var.key_name
 role_name=var.eksnoderole
 policy_arn3=var.policy_arn3
 policy_arn4=var.policy_arn4
