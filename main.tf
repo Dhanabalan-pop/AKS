@@ -28,12 +28,13 @@ module "vpc" {
   private_subnets     = var.private_subnets_cidr
   nat_name=var.nat_name
   routetable_name=var.routetable_name
+  count= var.existingvpc =="true" ? 0:1
 }
 module "eks"{
   source="./eks"
   eks_role_arn = module.iam.eksrolearn
   eks_name=var.eks_name
-  private_subnets     = module.vpc.private_subnets_id
+  private_subnets     = var.existingvpc =="true"? var.existingsubnets:module.vpc.private_subnets_id
   eksnode_role_arn = module.iam-node.eksnoderolearn
   eksnode_name=var.eksnode_name
   instance_types=var.instance_types

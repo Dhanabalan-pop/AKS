@@ -5,7 +5,12 @@ pipeline {
         string(name: 'EKSNODENAME', defaultValue: 'eksnode', description: 'Enter name for EKS node group')
         string(name: 'TWORKSPACE', defaultValue: 'default', description: 'Enter Terraform workspace name')
         string(name: 'INSTANCETYPE', defaultValue: '["t3.medium"]', description: 'Enter Instance type')
-        booleanParam(name: 'destroy', defaultValue: true, description: '')
+        booleanParam(name: 'destroy', defaultValue: true, description: 'Select the checkbox if you want to destroy the infrastructure')
+        booleanParam(name: 'existingvpc', defaultValue: true, description: 'Select the checkbox if you want to use existing vpc')
+        text(name: 'EXISTINGSUBNETS', defaultValue: '["subnet-0024c97d","subnet-2fe2b763","subnet-98bd0af3"]', description: 'Enter existing subnet ID,3subnet is required')
+        string(name: 'VPCCIDR', defaultValue: '0.0.0.0/0', description: 'Enter CIDR in case of creating new VPC')
+        text(name: 'PRIVATESUBNETCIDR', defaultValue: '["0.0.0.0/0","0.0.0.0/0","0.0.0.0/0"]', description: 'Enter CIDR for three private subnet')
+        string(name: 'PUBLICSUBNETCIDR', defaultValue: '0.0.0.0/0', description: 'Enter CIDR for public subnet')
     }
     stages {
         stage('Git checkout') { 
@@ -32,7 +37,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE'
+                sh 'terraform plan -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=PUBLICSUBNETCIDR -var private_subnets_cidr=PRIVATESUBNETCIDR'
             }
         }
         stage('Apply the terraform code') {
@@ -42,7 +47,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -auto-approve'
+                sh 'terraform apply -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var existingvpc=$existingvpc existingsubnets=$EXISTINGSUBNETS -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=PUBLICSUBNETCIDR -var private_subnets_cidr=PRIVATESUBNETCIDR -auto-approve'
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){

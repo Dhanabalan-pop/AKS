@@ -123,3 +123,13 @@ variable "instance_types"{
   description="Enter instance type"
   default=["t3.medium"]
 }
+variable "existingvpc"{
+  type=string
+  description="Specify true if you want to use existing VPC"
+  default="true"
+}
+variable "existingsubnets" {
+  type        = list
+  description = "Enter ID for the private subnet"
+  default=["subnet-0024c97d","subnet-2fe2b763","subnet-98bd0af3"]
+}
