@@ -47,7 +47,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'terraform apply $TWORKSPACE.out -auto-approve'
+                sh 'terraform apply $TWORKSPACE.out'
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){
