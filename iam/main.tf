@@ -1,5 +1,9 @@
+ locals { 
+  default_role_name = join("-", list(var.role_name, var.workspace ))
+  }
 resource "aws_iam_role" "eks_cluster" {
-  name = var.role_name
+  #name = var.role_name
+  name=local.default_role_name
   assume_role_policy=var.assume_role_policy
 }
 

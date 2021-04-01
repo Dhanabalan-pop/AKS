@@ -1,6 +1,9 @@
 variable "key_name" {
 default="eks1"
 }
+variable "workspace" {
+default="default"
+}
 variable "aws_region" {
 default="us-east-2"
 }
@@ -126,4 +129,19 @@ variable "existingsubnets" {
   type        = list
   description = "Enter ID for the private subnet"
   default=["subnet-0024c97d","subnet-2fe2b763","subnet-98bd0af3"]
+}
+variable "minnode"{
+  type=string
+  description="Enter Min node count for EKS cluster"
+  default="1"
+}
+variable "maxnode"{
+  type=string
+  description="Enter Max node count for EKS cluster"
+  default="2"
+}
+variable "desirednode"{
+  type=string
+  description="Enter desired node count for EKS cluster"
+  default="2"
 }
