@@ -7,7 +7,7 @@ pipeline {
         string(name: 'INSTANCETYPE', defaultValue: '["t3.medium"]', description: 'Enter Instance type')
         booleanParam(name: 'destroy', defaultValue: true, description: 'Select the checkbox if you want to destroy the infrastructure')
         string(name: 'VPCCIDR', defaultValue: '10.0.0.0/20', description: 'Enter CIDR in case of creating new VPC')
-        text(name: 'PRIVATESUBNETCIDR', defaultValue: '["10.0.2.0/20","10.0.3.0/20","10.0.4.0/20"]', description: 'Enter CIDR for three private subnet')
+        text(name: 'PRIVATESUBNETCIDR', defaultValue: '["10.0.2.0/24","10.0.3.0/24","10.0.4.0/24"]', description: 'Enter CIDR for three private subnet')
         string(name: 'PUBLICSUBNETCIDR', defaultValue: '10.0.5.0/24', description: 'Enter CIDR for public subnet')
         string(name: 'MINNODE', defaultValue: '2', description: 'Enter minimum node count for EKS cluster')
         string(name: 'MAXNODE', defaultValue: '4', description: 'Enter maximum node count for EKS cluster')
