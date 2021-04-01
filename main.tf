@@ -28,12 +28,14 @@ module "vpc" {
   nat_name=join("-", list(var.nat_name, var.workspace ))
   routetable_name=join("-", list(var.routetable_name, var.workspace ))
   workspace=var.workspace
+  count=var.existingvpc=="true" ? 0:1
 }
 module "eks"{
   source="./eks"
   eks_role_arn = module.iam.eksrolearn
   eks_name=join("-", list(var.eks_name, var.workspace ))
-  private_subnets = module.vpc.private_subnets_id
+  #private_subnets = module.vpc.private_subnets_id
+  private_subnets     = var.existingvpc =="false" ? module.vpc[0].private_subnets_id : var.existingsubnets
   eksnode_role_arn = module.iam-node.eksnoderolearn
   eksnode_name=join("-",list(var.eksnode_name, var.workspace))
   instance_types=var.instance_types
