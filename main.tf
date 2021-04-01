@@ -18,23 +18,24 @@ assume_role_policy1 = var.role1
 }
 module "vpc" {
   source = "./vpc"
-  vpc_name = var.vpc_name
+  vpc_name = join("-", list(var.vpc_name, var.workspace ))
   vpc_cidr = var.vpc_cidr
-  ig_name=var.ig_name
-  publicsubnet_name=var.publicsubnet_name
+  ig_name=join("-", list(var.ig_name, var.workspace ))
+  publicsubnet_name=join("-", list(var.publicsubnet_name, var.workspace ))
   public_subnets      = var.public_subnets_cidr
   availability_zones  = ["us-east-2a", "us-east-2b", "us-east-2c"]
   private_subnets     = var.private_subnets_cidr
-  nat_name=var.nat_name
-  routetable_name=var.routetable_name
+  nat_name=join("-", list(var.nat_name, var.workspace ))
+  routetable_name=join("-", list(var.routetable_name, var.workspace ))
+  workspace=var.workspace
 }
 module "eks"{
   source="./eks"
   eks_role_arn = module.iam.eksrolearn
-  eks_name=var.eks_name
+  eks_name=join("-", list(var.eks_name, var.workspace ))
   private_subnets = module.vpc.private_subnets_id
   eksnode_role_arn = module.iam-node.eksnoderolearn
-  eksnode_name=var.eksnode_name
+  eksnode_name=join("-",list(var.eksnode_name, var.workspace))
   instance_types=var.instance_types
   minnode=var.minnode
   maxnode=var.maxnode

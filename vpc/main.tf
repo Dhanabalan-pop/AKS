@@ -17,6 +17,7 @@ resource "aws_subnet" "public_subnet" {
   cidr_block              = var.public_subnets
   tags = {
     Name        = var.publicsubnet_name
+    Tier = "Public"
   }
 }
 resource "aws_route" "r" {
@@ -32,12 +33,16 @@ resource "aws_subnet" "private_subnet" {
   availability_zone       = element(var.availability_zones,   count.index)
   map_public_ip_on_launch = false
   tags = {
-    Name        = "my-subnet-${count.index}"
+    Name        = "my-subnet-${count.index}-${var.workspace}"
+    Tier = "Private"
   }
 }
 resource "aws_eip" "nat_eip" {
   vpc        = true
   depends_on = [aws_internet_gateway.ig]
+  tags = {
+    Name        = "my-nat-eip-${var.workspace}"
+  }
 }
 /* NAT */
 resource "aws_nat_gateway" "nat" {
