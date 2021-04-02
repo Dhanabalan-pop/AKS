@@ -23,7 +23,7 @@ module "vpc" {
   ig_name=join("-", list(var.ig_name, var.workspace ))
   publicsubnet_name=join("-", list(var.publicsubnet_name, var.workspace ))
   public_subnets      = var.public_subnets_cidr
-  availability_zones  = ["us-east-2a", "us-east-2b", "us-east-2c"]
+  availability_zones  = ["us-east-1a", "us-east-1b", "us-east-1c"]
   private_subnets     = var.private_subnets_cidr
   nat_name=join("-", list(var.nat_name, var.workspace ))
   routetable_name=join("-", list(var.routetable_name, var.workspace ))
