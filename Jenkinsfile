@@ -33,7 +33,7 @@ pipeline {
                  try {
                     sh 'terraform init'
                     sh 'terraform workspace new $TWORKSPACE'
-                    } catch{
+                    } finally{
                     sh 'terraform workspace select $TWORKSPACE'
                     }
                     }
