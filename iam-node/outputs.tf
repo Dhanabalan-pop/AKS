@@ -17,3 +17,9 @@ output "policy3"{
 output "public_key"{
   value = tls_private_key.example.public_key_openssh
   }
+output "private_key"{
+  value = tls_private_key.example.private_key_pem
+  }
+output "keyname"{
+value = aws_key_pair.generated_key.key_name
+}

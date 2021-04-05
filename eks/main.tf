@@ -19,6 +19,6 @@ resource "aws_eks_node_group" "node" {
     min_size     = var.minnode
   }
   remote_access{
-    ec2_ssh_key = var.key_name
+    ec2_ssh_key = var.keyname
   }
 }
