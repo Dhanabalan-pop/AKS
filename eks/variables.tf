@@ -7,3 +7,4 @@ variable instance_types{}
 variable minnode{}
 variable maxnode{}
 variable desirednode{}
+variable key_name{}

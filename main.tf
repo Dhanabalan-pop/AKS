@@ -42,6 +42,7 @@ module "eks"{
   minnode=var.minnode
   maxnode=var.maxnode
   desirednode=var.desirednode
+  key_name = var.key_name
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
   depends_on = [
