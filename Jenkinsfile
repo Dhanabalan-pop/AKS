@@ -29,14 +29,8 @@ pipeline {
                 }
             }
             steps {
-                script {
-                 try {
                     sh 'terraform init'
                     sh 'terraform workspace new $TWORKSPACE'
-                    } finally{
-                    sh 'terraform workspace select $TWORKSPACE'
-                    }
-                    }
         }
         }
         stage('Check Terraform plan') { 
