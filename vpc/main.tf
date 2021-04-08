@@ -20,8 +20,8 @@ resource "aws_subnet" "public_subnet" {
   tags = {
     Name        = var.publicsubnet_name
     Tier = "Public"
-    kubernetes.io/cluster/ekscluster-nine="shared"
-    kubernetes.io/role/elb="1"
+    "kubernetes.io/cluster/ekscluster-nine"="shared"
+    "kubernetes.io/role/elb"="1"
   }
 }
 resource "aws_route" "r" {
@@ -39,8 +39,8 @@ resource "aws_subnet" "private_subnet" {
   tags = {
     Name        = "my-subnet-${count.index}-${var.workspace}"
     Tier = "Private"
-    kubernetes.io/role/internal-elb = "1"
-    kubernetes.io/cluster/ekscluster-nine="shared"
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/cluster/ekscluster-nine"="shared"
   }
 }
 resource "aws_eip" "nat_eip" {
