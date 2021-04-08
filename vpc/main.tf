@@ -14,10 +14,14 @@ resource "aws_internet_gateway" "ig" {
 }
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.public_subnets
+  count                   = length(var.public_subnets)
+  cidr_block              = element(var.public_subnets, count.index)
+  availability_zone       = element(var.availability_zones,   count.index)
   tags = {
     Name        = var.publicsubnet_name
     Tier = "Public"
+    kubernetes.io/cluster/ekscluster-nine="shared"
+    kubernetes.io/role/elb="1"
   }
 }
 resource "aws_route" "r" {
@@ -35,6 +39,8 @@ resource "aws_subnet" "private_subnet" {
   tags = {
     Name        = "my-subnet-${count.index}-${var.workspace}"
     Tier = "Private"
+    kubernetes.io/role/internal-elb = "1"
+    kubernetes.io/cluster/ekscluster-nine="shared"
   }
 }
 resource "aws_eip" "nat_eip" {
