@@ -19,7 +19,7 @@ pipeline {
         stage('Git checkout') { 
             steps {
                 sh 'whoami'
-                git credentialsId: '487f9c43-7677-474d-85fe-1483be3db9ba', url: 'https://github.com/Dhanabalan-pop/EKS.git'
+                git credentialsId: '6558272a-3027-44cb-8bfc-a25b9cab9f45', url: 'https://github.com/Dhanabalan-pop/EKS.git'
             }
         }
         stage('Terraform Initialization') { 
