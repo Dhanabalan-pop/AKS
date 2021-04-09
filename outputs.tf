@@ -5,5 +5,5 @@ output private_key{
     value=module.iam-node.private_key
 }
 output EKSclustername{
-    value=eks.eks_name
+    value=module.eks.EKSclustername
 }

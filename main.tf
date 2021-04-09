@@ -45,4 +45,9 @@ module "eks"{
   keyname = module.iam-node.keyname
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
+  depends_on = [
+    module.iam-node.policy1,
+    module.iam-node.policy2,
+    module.iam-node.policy3,
+  ]
 }
