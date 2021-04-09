@@ -1,6 +1,11 @@
 output "eksnoderolearn" {
   description = "EKS cluster node role"
   value       = aws_iam_role.eks_cluster.arn
+  depends_on = [
+    policy1,
+    policy2,
+    policy3,
+  ]
 }
 output "policy1"{
     description = "EKS cluster node role policy1"
