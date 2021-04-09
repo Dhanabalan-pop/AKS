@@ -19,13 +19,7 @@ pipeline {
         stage('Git checkout') { 
             steps {
                 sh 'whoami'
-                sh 'ls -la'
-                sh 'pwd'
-                dir("terraform"){
                 git branch: 'master', credentialsId: '6558272a-3027-44cb-8bfc-a25b9cab9f45', url: 'https://github.com/Dhanabalan-pop/EKS.git'
-                }
-                sh 'ls -la'
-                sh 'pwd'
             }
         }
         stage('Terraform Initialization') { 
@@ -59,8 +53,11 @@ pipeline {
             }
             steps {
                 sh 'terraform apply $TWORKSPACE.out'
-                //sh 'clustername=terraform output EKSclustername'
-                //sh 'bash scripts/kubectl.sh ${clustername}'
+                EKSNAME = sh (script: 'terraform output EKSclustername',returnStdout: true).trim()
+                dir(scripts){
+                sh './kubectl.sh $EKSNAME'
+                sh './helm.sh'
+                }
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){
