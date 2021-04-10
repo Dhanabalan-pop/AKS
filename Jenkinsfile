@@ -53,10 +53,7 @@ pipeline {
             }
             steps {
                 sh 'terraform apply $TWORKSPACE.out'
-                sh 'terraform output EKSclustername'
-                script{
-                def EKSNAME = sh(script: 'terraform output EKSclustername',returnStdout: true).trim()
-                }
+                sh 'EKSNAME=terraform output EKSclustername'
                 sh 'echo $EKSNAME'
                 
             }
