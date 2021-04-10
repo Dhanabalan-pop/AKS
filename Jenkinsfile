@@ -53,8 +53,10 @@ pipeline {
             }
             steps {
                 sh 'terraform apply $TWORKSPACE.out'
-                //sh 'EKSNAME = sh(script: 'terraform output EKSclustername',returnStdout: true).trim()'
-                sh 'EKSNAME'= sh 'terraform output EKSclustername'
+                script{
+                EKSNAME = sh(script: 'terraform output EKSclustername',returnStdout: true).trim()
+                }
+                //sh 'EKSNAME'= sh 'terraform output EKSclustername'
                 dir(scripts){
                 sh './kubectl.sh $EKSNAME'
                 sh './helm.sh'
