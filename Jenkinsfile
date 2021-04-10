@@ -54,10 +54,7 @@ pipeline {
             steps {
                 sh 'terraform apply $TWORKSPACE.out'
                 sh 'terraform output EKSclustername'
-                dir(scripts){
-                //sh './kubectl.sh $EKSNAME'
-                sh './helm.sh'
-                }
+                
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){
