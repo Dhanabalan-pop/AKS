@@ -57,6 +57,7 @@ pipeline {
                 script{
                 def EKSNAME = sh(script: 'terraform output EKSclustername',returnStdout: true).trim()
                 }
+                sh 'echo $EKSNAME'
                 
             }
         }
