@@ -67,7 +67,7 @@ pipeline {
             steps {
                 sh 'echo $EKSNAME'
                 sh 'whoami'
-                sh 'scripts/kubectl.sh $EKSNAME'
+                sh 'sudo bash scripts/kubectl.sh $EKSNAME'
              }      
             }
         stage('Destroy the Infrastructure created by Terraform'){
