@@ -58,7 +58,7 @@ pipeline {
                 script: 'terraform output EKSclustername',
                 returnStdout: true).trim()
                 echo "${EKSNAME}"
-                .scripts/kubectl.sh "${EKSNAME}"
+                bash scripts/kubectl.sh "${EKSNAME}"
              }      
             }
         }
