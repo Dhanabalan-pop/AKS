@@ -58,9 +58,8 @@ pipeline {
                 script: 'terraform output EKSclustername',
                 returnStdout: true).trim()
                 echo "${EKSNAME}"
-             }
-             sh 'echo "${EKSNAME}"'
-                
+                .scripts/kubectl.sh "${EKSNAME}"
+             }      
             }
         }
         stage('Destroy the Infrastructure created by Terraform'){
