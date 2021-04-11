@@ -66,6 +66,7 @@ pipeline {
         }
             steps {
                 sh 'echo $EKSNAME'
+                sh 'whoami'
                 sh 'scripts/kubectl.sh $EKSNAME'
              }      
             }
