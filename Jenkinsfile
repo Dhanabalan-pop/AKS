@@ -53,15 +53,21 @@ pipeline {
             }
             steps {
                 sh 'terraform apply $TWORKSPACE.out'
-                script {
-                EKSNAME = sh (
-                script: 'terraform output EKSclustername',
-                returnStdout: true).trim()
-                echo "${EKSNAME}"
-                bash scripts/kubectl.sh "${EKSNAME}"
              }      
             }
+        stage('Run Kubectl and Helm scripts') {
+            when {
+                expression {
+                    params.destroy==false
+                }
+            }
+            environment {
+          EKSNAME = sh (script: 'terraform output EKSclustername',returnStdout: true).trim()
         }
+            steps {
+                sh 'echo $EKSNAME'
+             }      
+            }
         stage('Destroy the Infrastructure created by Terraform'){
             when {
                 expression {
