@@ -7,4 +7,4 @@ kubectl version --short --client
 
 #Connect to EKS cluster
 aws configure list
-#aws eks --region us-west-1 update-kubeconfig --name ekscluster-one
+aws eks --region us-west-1 update-kubeconfig --name ekscluster-one
