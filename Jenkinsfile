@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('awsaccesskey')
+        AWS_SECRET_ACCESS_KEY = credentials('awssecretkey')
+    }
     parameters {
         string(name: 'EKSCLUSTERNAME', defaultValue: 'ekscluster', description: 'Enter Name for EKS Cluster')
         string(name: 'EKSNODENAME', defaultValue: 'eksnode', description: 'Enter name for EKS node group')
@@ -66,6 +70,8 @@ pipeline {
         }
             steps {
                 sh 'whoami'
+                sh 'aws configure list'
+                sh 'aws configure set region us-west-1'
                 sh 'aws configure list'
                 sh "sudo bash scripts/kubectl.sh $EKSNAME"
                 sh 'sudo bash scripts/helm.sh'
