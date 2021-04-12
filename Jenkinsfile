@@ -70,9 +70,10 @@ pipeline {
         }
             steps {
                 sh 'whoami'
-                sh 'aws configure list'
                 sh 'aws configure set region us-west-1'
+                sh 'sudo aws configure set region us-west-1'
                 sh 'aws configure list'
+                sh 'sudo aws configure list'
                 sh "sudo bash scripts/kubectl.sh $EKSNAME"
                 sh 'sudo bash scripts/helm.sh'
              }      
