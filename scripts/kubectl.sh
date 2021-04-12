@@ -6,4 +6,4 @@ echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 kubectl version --short --client
 
 #Connect to EKS cluster
-aws eks --region us-west-1 update-kubeconfig --name $1
+aws eks --region us-west-1 update-kubeconfig --name ekscluster-one
