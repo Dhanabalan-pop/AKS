@@ -65,7 +65,7 @@ pipeline {
           EKSNAME = sh (script: 'terraform output EKSclustername',returnStdout: true).trim()
         }
             steps {
-                sh 'echo $EKSNAME'
+                sh 'echo $($EKSNAME | sed 's/"//g')'
                 sh 'whoami'
                 sh 'aws configure list'
                 sh 'sudo bash scripts/kubectl.sh $EKSNAME'
