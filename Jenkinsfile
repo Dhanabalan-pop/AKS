@@ -67,6 +67,7 @@ pipeline {
             steps {
                 sh 'echo $EKSNAME'
                 sh 'whoami'
+                sh 'aws configure list'
                 sh 'sudo bash scripts/kubectl.sh $EKSNAME'
                 sh 'sudo bash scripts/helm.sh'
              }      
