@@ -77,6 +77,7 @@ pipeline {
                 sh 'aws configure list'
                 sh 'sudo aws configure list'
                 sh "sudo bash scripts/kubectl.sh $EKSNAME"
+                sh 'chmod +x scripts/helm.sh'
                 sh 'sudo bash scripts/helm.sh'
              }      
             }
