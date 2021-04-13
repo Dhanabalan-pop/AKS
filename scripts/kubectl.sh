@@ -8,3 +8,6 @@ kubectl version --short --client
 #Connect to EKS cluster
 aws eks --region us-west-1 update-kubeconfig --name $1
 kubectl get nodes
+
+#Adding Path 
+echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc

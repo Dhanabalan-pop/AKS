@@ -7,7 +7,6 @@ chown jenkins:jenkins get_helm.sh
 #curl -O https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
 #tar -zxvf helm-v3.5.3-linux-amd64.tar.gz
 #mv linux-amd64/helm /usr/local/bin/helm
-echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc
 #Install promtail
 helm repo add grafana https://grafana.github.io/helm-charts --force-update
 kubectl create namespace cms-container-monitoring
