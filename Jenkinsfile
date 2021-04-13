@@ -77,17 +77,6 @@ pipeline {
                 sh 'aws configure list'
                 sh 'sudo aws configure list'
                 sh "sudo bash scripts/kubectl.sh $EKSNAME"
-                sh '''#!/bin/bash
-                   sudo curl -O https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
-                   sudo tar xzvf helm-v3.5.3-linux-amd64.tar.gz
-                   sudo mv linux-amd64/helm /usr/local/bin/helm
-                   sudo chmod +x /usr/local/bin/helm
-                   helm repo add grafana https://grafana.github.io/helm-charts --force-update
-                   kubectl create namespace cms-container-monitoring
-                   helm install promtail --namespace cms-container-monitoring grafana/promtail -f ../config/helm/prometheusvalues.yaml || helm upgrade promtail --namespace cms-container-monitoring grafana/promtail -f ../config/helm/prometheusvalues.yaml
-                   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts --force-update
-                   helm install prometheus -f ../config/helm/prometheusvalues.yaml prometheus-community/prometheus --namespace cms-container-monitoring || helm upgrade prometheus -f ../config/helm/prometheusvalues.yaml prometheus-community/prometheus --namespace cms-container-monitoring
-                   '''
              }      
             }
         stage('Destroy the Infrastructure created by Terraform'){
