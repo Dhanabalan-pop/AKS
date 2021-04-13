@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+      agent { 
+        kubernetes {
+            label 'jenkins-slave'
+        } 
+      } 
     environment {
         AWS_ACCESS_KEY_ID     = credentials('awsaccesskey')
         AWS_SECRET_ACCESS_KEY = credentials('awssecretkey')
