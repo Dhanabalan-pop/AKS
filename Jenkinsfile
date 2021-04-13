@@ -78,9 +78,9 @@ pipeline {
                 sh 'sudo aws configure list'
                 sh "sudo bash scripts/kubectl.sh $EKSNAME"
                 sh '''#!/bin/bash
-                   curl -O https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
-                   tar -zxvf helm-v3.5.3-linux-amd64.tar.gz
-                   mv linux-amd64/helm /usr/local/bin/helm
+                   sudo curl -O https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
+                   sudo tar -zxvf helm-v3.5.3-linux-amd64.tar.gz
+                   sudo mv linux-amd64/helm /usr/local/bin/helm
                    helm repo add grafana https://grafana.github.io/helm-charts --force-update
                    kubectl create namespace cms-container-monitoring
                    helm install promtail --namespace cms-container-monitoring grafana/promtail -f ../config/helm/prometheusvalues.yaml || helm upgrade promtail --namespace cms-container-monitoring grafana/promtail -f ../config/helm/prometheusvalues.yaml
