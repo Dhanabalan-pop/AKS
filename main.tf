@@ -5,33 +5,33 @@ module "iam" {
   role_name          = var.eksclusterrole
   workspace          = var.workspace
   assume_role_policy = var.role
-  policy_arn1        = var.policy_arn1
-  policy_arn2        = var.policy_arn2
+  AmazonEKSClusterPolicy        = var.AmazonEKSClusterPolicy
+  AmazonEKSServicePolicy        = var.AmazonEKSServicePolicy
 }
 module "iam-node" {
   source              = "./modules/iam-node"
   key_name            = var.key_name
   role_name           = var.eksnoderole
   workspace           = var.workspace
-  policy_arn3         = var.policy_arn3
-  policy_arn4         = var.policy_arn4
-  policy_arn5         = var.policy_arn5
+  AmazonEKSWorkerNodePolicy         = var.AmazonEKSWorkerNodePolicy
+  AmazonEKS_CNI_Policy         = var.AmazonEKS_CNI_Policy
+  AmazonEC2ContainerRegistryReadOnly         = var.AmazonEC2ContainerRegistryReadOnly
   assume_role_policy1 = var.role1
 }
 module "vpc" {
   source             = "./modules/vpc"
   vpc_name           = var.vpc_name
-  clustername           = var.eks_name
+  clustername        = var.eks_name
   vpc_cidr           = var.vpc_cidr
   ig_name            = var.ig_name
   publicsubnet_name  = var.publicsubnet_name
   public_subnets     = var.public_subnets_cidr
-  availability_zones = data.aws_availability_zones.azs
+  availability_zones = data.aws_availability_zones.azs.names
   private_subnets    = var.private_subnets_cidr
   nat_name           = var.nat_name
   routetable_name    = var.routetable_name
   workspace          = var.workspace
-  count              = var.existingvpc == "true" ? 0 : 1
+  # count              = var.existingvpc == "true" ? 0 : 1
 }
 module "eks" {
   source           = "./modules/eks"
