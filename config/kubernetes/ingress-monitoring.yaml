@@ -1,0 +1,16 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: monitoring-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /lazy/*
+        backend:
+          serviceName: spring-boot-example
+          servicePort: 8080
+      - path: /v3/lazy
+        backend:
+          serviceName: spring-boot-example-v3
+          servicePort: 8080
