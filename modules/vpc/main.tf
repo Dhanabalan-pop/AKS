@@ -29,8 +29,8 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-resource "aws_route_table" "public_rt" {
-  vpc_id = aws_vpc.vpc.id
+resource "aws_default_route_table" "default" {
+  default_route_table_id = aws_vpc.vpc.default_route_table_id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -38,15 +38,27 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags = {
-    Name = "PublicSubnetRT-${terraform.workspace}"
+    Name = "Default_public-${terraform.workspace}"
   }
 }
+# resource "aws_route_table" "public_rt" {
+#   vpc_id = aws_vpc.vpc.id
+
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     gateway_id = aws_internet_gateway.ig.id
+#   }
+
+#   tags = {
+#     Name = "PublicSubnetRT-${terraform.workspace}"
+#   }
+# }
 
 # Assign the route table to the public Subnet
 resource "aws_route_table_association" "public-rt-association" {
   count          = length(var.public_subnets)
   subnet_id      = element(aws_subnet.public_subnet.*.id, count.index)
-  route_table_id = aws_route_table.public_rt.id
+  route_table_id = aws_default_route_table.default.id
 }
 
 /* Private subnet */
