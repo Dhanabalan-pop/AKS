@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+      agent any
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('awsaccesskey')
+        AWS_SECRET_ACCESS_KEY = credentials('awssecretkey')
+    }
     parameters {
         string(name: 'EKSCLUSTERNAME', defaultValue: 'ekscluster', description: 'Enter Name for EKS Cluster')
         string(name: 'EKSNODENAME', defaultValue: 'eksnode', description: 'Enter name for EKS node group')
@@ -19,7 +23,7 @@ pipeline {
         stage('Git checkout') { 
             steps {
                 sh 'whoami'
-                git credentialsId: '487f9c43-7677-474d-85fe-1483be3db9ba', url: 'https://github.com/Dhanabalan-pop/EKS.git'
+                git branch: 'master', credentialsId: '6558272a-3027-44cb-8bfc-a25b9cab9f45', url: 'https://github.com/Dhanabalan-pop/EKS.git'
             }
         }
         stage('Terraform Initialization') { 
@@ -53,8 +57,28 @@ pipeline {
             }
             steps {
                 sh 'terraform apply $TWORKSPACE.out'
+             }      
             }
+        stage('Run Kubectl and Helm scripts') {
+            when {
+                expression {
+                    params.destroy==false
+                }
+            }
+            environment {
+          EKSNAME = sh (script: 'terraform output EKSclustername',returnStdout: true).trim()
         }
+            steps {
+                sh 'whoami'
+                sh 'aws configure set region us-west-1'
+                sh 'sudo aws configure set region us-west-1'
+                sh 'sudo aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID'
+                sh 'sudo aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY'
+                sh 'aws configure list'
+                sh 'sudo aws configure list'
+                sh "sudo bash scripts/kubectl.sh $EKSNAME"
+             }      
+            }
         stage('Destroy the Infrastructure created by Terraform'){
             when {
                 expression {
