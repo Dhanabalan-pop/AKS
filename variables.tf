@@ -113,14 +113,14 @@ variable "publicsubnet_name" {
 variable "nat_name" {
   type        = string
   description = "Enter the name for your NAT Gateway"
-  default     = "wahajnat"
+  default     = "mynatgateway"
 
 }
 
 variable "routetable_name" {
   type        = string
   description = "Enter the name for your route table"
-  default     = "wahajrt"
+  default     = "myroutetable"
 }
 
 variable "eks_name" {
