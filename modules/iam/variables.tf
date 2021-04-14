@@ -1,5 +1,5 @@
 variable "role_name"{}
-variable "policy_arn1"{}
-variable "policy_arn2"{}
+variable "AmazonEKSClusterPolicy"{}
+variable "AmazonEKSServicePolicy"{}
 variable "assume_role_policy"{}
 variable "workspace"{}
