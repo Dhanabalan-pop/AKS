@@ -8,3 +8,4 @@ variable "availability_zones"{}
 variable "nat_name"{}
 variable "routetable_name"{}
 variable "workspace"{}
+variable "clustername"{}
