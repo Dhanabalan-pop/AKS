@@ -12,7 +12,10 @@ resource "aws_eks_node_group" "node" {
   node_role_arn   = var.eksnode_role_arn
   subnet_ids      = var.private_subnets
   instance_types  = var.instance_types
-
+  tags = {
+    "k8s.io/cluster-autoscaler/${aws_eks_cluster.aws_eks.name}" = "owned"
+    "k8s.io/cluster-autoscaler/enabled" = "TRUE"
+  }
   scaling_config {
     desired_size = var.desirednode
     max_size     = var.maxnode

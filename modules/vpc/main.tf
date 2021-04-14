@@ -24,7 +24,7 @@ resource "aws_subnet" "public_subnet" {
   tags = {
     Name        = "${var.publicsubnet_name}-${terraform.workspace}"
     Tier = "Public"
-    "kubernetes.io/cluster/${var.clustername}"="shared"
+    "kubernetes.io/cluster/${var.clustername}-${terraform.workspace}"="shared"
     "kubernetes.io/role/elb"="1"
   }
 }
@@ -72,7 +72,7 @@ resource "aws_subnet" "private_subnet" {
     Name        = "my-subnet-${count.index}-${var.workspace}"
     Tier = "Private"
     "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/cluster/${var.clustername}"="shared"
+    "kubernetes.io/cluster/${var.clustername}-${terraform.workspace}"="shared"
   }
 }
 
