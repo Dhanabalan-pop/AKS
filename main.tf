@@ -31,7 +31,7 @@ module "vpc" {
   nat_name           = var.nat_name
   routetable_name    = var.routetable_name
   workspace          = var.workspace
-  # count              = var.existingvpc == "true" ? 0 : 1
+  count              = var.existingvpc == "true" ? 0 : 1
 }
 module "eks" {
   source           = "./modules/eks"
