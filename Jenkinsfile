@@ -33,6 +33,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: checkov
+    image: bridgecrew/checkov
+    command:
+    - cat
+    tty: true
 """
 }
   }
@@ -63,6 +68,13 @@ spec:
                 sh 'pip install checkov'
         }
         }
+         stage('checkov') { 
+            steps{
+                container('checkov'){
+                sh 'checkov -d .'
+        }
+        }
+         }
         stage('Terraform Initialization') { 
                 when {
                 expression {
