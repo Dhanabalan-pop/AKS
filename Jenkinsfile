@@ -4,6 +4,9 @@ pipeline {
             label 'jenkins-slave'
         }      
     } 
+    tools{
+        terraform "Terraform14"
+    }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('awsaccesskey')
         AWS_SECRET_ACCESS_KEY = credentials('awssecretkey')
