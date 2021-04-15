@@ -70,7 +70,8 @@ spec:
          stage('checkov') { 
             steps{
                 container('checkov'){
-                sh 'checkov -d .'
+                sh "checkov -d . -o junitxml > result.xml || true"
+                junit "result.xml"
         }
         }
          }
