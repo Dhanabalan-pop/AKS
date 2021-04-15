@@ -4,9 +4,6 @@ pipeline {
             label 'jenkins-slave'
         }      
     } 
-    tools{
-        terraform "Terraform14"
-    }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('awsaccesskey')
         AWS_SECRET_ACCESS_KEY = credentials('awssecretkey')
@@ -40,10 +37,13 @@ pipeline {
                 }
             }
             steps {
+            container('terraform')
+            {
                     sh 'terraform init'
                     sh 'terraform workspace select $TWORKSPACE || terraform workspace new $TWORKSPACE'
         }
         }
+    }
         stage('Check Terraform plan') { 
             when {
                 expression {
