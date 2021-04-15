@@ -93,6 +93,12 @@ spec:
             steps{
                 container('terraform') {
                 sh 'terraform apply $TWORKSPACE.out'
+                script {
+                EKSNAME = sh (
+                script: 'terraform output EKSclustername',
+                returnStdout: true).trim()
+                echo "${EKSNAME}"
+               }
              }      
             }
         }
@@ -101,11 +107,6 @@ spec:
                 expression {
                     params.destroy==false
                 }
-            }
-            environment {
-                container('terraform'){
-          EKSNAME = sh (script: 'terraform output EKSclustername',returnStdout: true).trim()
-        }
             }
             steps {
                 container('kubectl'){
