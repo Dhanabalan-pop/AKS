@@ -37,11 +37,8 @@ pipeline {
                 }
             }
             steps {
-            container('terraform')
-            {
                     sh 'terraform init'
                     sh 'terraform workspace select $TWORKSPACE || terraform workspace new $TWORKSPACE'
-        }
         }
     }
         stage('Check Terraform plan') { 
