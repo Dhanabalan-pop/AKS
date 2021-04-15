@@ -123,6 +123,7 @@ spec:
                 sh 'aws configure list'
                 sh 'aws configure list'
                 sh "bash scripts/kubectl.sh $EKSNAME"
+                sh 'bash scripts/helm.sh'
              }      
             }
         }
