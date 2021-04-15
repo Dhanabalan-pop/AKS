@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-promtail-lb
+  #annotations:
+          #service.beta.kubernetes.io/aws-load-balancer-type: nlb-ip
+  labels:
+    app: promtail-prometheus
+    app.kubernetes.io/managed-by: Helm
+    chart: prometheus-13.6.0
+    component: promtail-prometheus
+    heritage: Helm
+    release: prometheus
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 9100
+    targetPort: 9100
+    protocol: TCP
+    name: node-exp
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: kube-state
+  selector:
+    #app: prometheus
+    #component: node-exporter
+    #release: prometheus
+    stack: monitoring
