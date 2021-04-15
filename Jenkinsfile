@@ -77,9 +77,11 @@ spec:
                 }
             }
             steps {
+                container('terraform'){
                 sh 'export TF_WORKSPACE=$TWORKSPACE'
                 sh 'terraform plan -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=$PUBLICSUBNETCIDR -var private_subnets_cidr=$PRIVATESUBNETCIDR -var workspace=$TWORKSPACE -var minnode=$MINNODE -var maxnode=$MAXNODE -var desirednode=$DESIREDNODE -out $TWORKSPACE.out'
                 sh 'terraform show -no-color $TWORKSPACE.out > $TWORKSPACE.txt'
+            }
             }
         }
         stage('Apply the terraform code') {
@@ -88,10 +90,12 @@ spec:
                     params.destroy==false
                 }
             }
-            steps {
+            steps{
+                container('terraform') {
                 sh 'terraform apply $TWORKSPACE.out'
              }      
             }
+        }
         stage('Run Kubectl and Helm scripts') {
             when {
                 expression {
@@ -99,9 +103,12 @@ spec:
                 }
             }
             environment {
+                container('terraform'){
           EKSNAME = sh (script: 'terraform output EKSclustername',returnStdout: true).trim()
         }
+            }
             steps {
+                container('kubectl'){
                 sh 'whoami'
                 sh 'aws configure set region us-west-1'
                 sh 'sudo aws configure set region us-west-1'
@@ -112,17 +119,20 @@ spec:
                 sh "sudo bash scripts/kubectl.sh $EKSNAME"
              }      
             }
+        }
         stage('Destroy the Infrastructure created by Terraform'){
             when {
                 expression {
                     params.destroy
                 }
             }
-            steps {
+            steps{
+                container(terraform) {
                 sh 'terraform workspace select $TWORKSPACE'
                 sh 'terraform init'
                 sh 'terraform destroy -auto-approve'
             }
+        }
         }
     }
 }
