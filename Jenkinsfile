@@ -117,12 +117,12 @@ spec:
                 container('helm-kubectl-awscli'){
                 sh 'whoami'
                 sh 'aws configure set region us-west-1'
-                sh 'sudo aws configure set region us-west-1'
-                sh 'sudo aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID'
-                sh 'sudo aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY'
+                sh 'aws configure set region us-west-1'
+                sh 'aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID'
+                sh 'aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY'
                 sh 'aws configure list'
-                sh 'sudo aws configure list'
-                sh "sudo bash scripts/kubectl.sh $EKSNAME"
+                sh 'aws configure list'
+                sh "bash scripts/kubectl.sh $EKSNAME"
              }      
             }
         }
