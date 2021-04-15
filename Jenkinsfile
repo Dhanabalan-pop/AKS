@@ -60,6 +60,7 @@ spec:
             steps{
                 sh 'whoami'
                 git branch: 'master', credentialsId: '6558272a-3027-44cb-8bfc-a25b9cab9f45', url: 'https://github.com/Dhanabalan-pop/EKS.git'
+                sh 'pip install checkov'
         }
         }
         stage('Terraform Initialization') { 
