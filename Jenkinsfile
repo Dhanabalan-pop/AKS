@@ -28,6 +28,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: helm-kubectl-awscli
+    image: jshimko/kube-tools-aws:latest
+    command:
+    - cat
+    tty: true
 """
 }
   }
@@ -109,7 +114,7 @@ spec:
                 }
             }
             steps {
-                container('kubectl'){
+                container('helm-kubectl-awscli'){
                 sh 'whoami'
                 sh 'aws configure set region us-west-1'
                 sh 'sudo aws configure set region us-west-1'
