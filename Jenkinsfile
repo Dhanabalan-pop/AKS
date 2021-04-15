@@ -19,7 +19,7 @@ spec:
   serviceAccountName: jenkins
   containers:
   - name: terraform
-    image: hashicorp/terraform:latest
+    image: hashicorp/terraform:0.14.8
     command:
     - cat
     tty: true
