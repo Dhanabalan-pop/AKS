@@ -1,9 +1,36 @@
 pipeline {
-      agent { 
+      /*agent { 
         kubernetes {
             label 'jenkins-slave'
         }      
-    } 
+    } */
+     agent {
+    kubernetes {
+      label 'jenkins-slave'
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+  serviceAccountName: jenkins
+  containers:
+  - name: terraform
+    image: hashicorp/terraform:light
+    command:
+    - cat
+    tty: true
+  - name: kubectl
+    image: gcr.io/cloud-builders/kubectl
+    command:
+    - cat
+    tty: true
+"""
+}
+  }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('awsaccesskey')
         AWS_SECRET_ACCESS_KEY = credentials('awssecretkey')
@@ -36,11 +63,13 @@ pipeline {
                     params.destroy==false
                 }
             }
-            steps {
+            steps{
+                container('terraform'){
                     sh 'terraform init'
                     sh 'terraform workspace select $TWORKSPACE || terraform workspace new $TWORKSPACE'
         }
     }
+        }
         stage('Check Terraform plan') { 
             when {
                 expression {
