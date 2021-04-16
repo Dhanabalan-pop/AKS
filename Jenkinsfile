@@ -137,6 +137,7 @@ spec:
                 sh 'aws configure list'
                 sh "bash scripts/kubectl.sh $EKSNAME"
                 sh 'bash scripts/helm.sh'
+                sh 'bash scripts/kube-dashboard.sh'
              }      
             }
         }
