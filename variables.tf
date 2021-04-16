@@ -170,3 +170,13 @@ variable "desirednode" {
   description = "Enter desired node count for EKS cluster"
   default     = "2"
 }
+variable "clusterautoscalerrole"{
+  type = string
+  description = "Enter the name for Cluster Autoscaler Role"
+  default = "EKSClusterAutoScalerRole"
+}
+variable "clusterautoscalerpolicy"{
+  type = string
+  description = "Enter the name for Cluster Autoscaler policy"
+  default = "EKSClusterAutoScalerPolicy"
+}

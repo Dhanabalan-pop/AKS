@@ -33,10 +33,32 @@ data "aws_iam_policy_document" "example_assume_role_policy" {
     }
   }
 }
-
 resource "aws_iam_role" "example" {
   assume_role_policy = data.aws_iam_policy_document.example_assume_role_policy.json
-  name               = "example"
+  name               = "${var.clusterautoscalerrole}-${terraform.workspace}"
+  inline_policy {
+    name = "${var.clusterautoscalerpolicy}-${terraform.workspace}"
+
+    policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeAutoScalingInstances",
+                "autoscaling:DescribeLaunchConfigurations",
+                "autoscaling:DescribeTags",
+                "autoscaling:SetDesiredCapacity",
+                "autoscaling:TerminateInstanceInAutoScalingGroup",
+                "ec2:DescribeLaunchTemplateVersions"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
+}
+)
+  }
 }
 resource "aws_eks_node_group" "node" {
   cluster_name    = aws_eks_cluster.aws_eks.name

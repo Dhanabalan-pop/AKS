@@ -8,3 +8,5 @@ variable minnode{}
 variable maxnode{}
 variable desirednode{}
 variable keyname{}
+variable clusterautoscalerrole{}
+variable clusterautoscalerpolicy{}
