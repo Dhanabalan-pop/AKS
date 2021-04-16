@@ -121,7 +121,7 @@ spec:
                 EKSCLUSTERAUTOSCALERARN = sh (
                 script: 'terraform output EKSclusterautoscalerrole',
                 returnStdout: true).trim()
-                echo "${EKSNAMEEKSCLUSTERAUTOSCALERARN}"
+                echo "${EKSCLUSTERAUTOSCALERARN}"
                }
              }      
             }
