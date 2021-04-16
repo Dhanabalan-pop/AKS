@@ -8,3 +8,6 @@ output "private_key" {
 output EKSclustername{
     value=module.eks.EKSclustername
 }
+output EKSclusterautoscalerrole{
+  value=module.eks.EKSclusterautoscalerrole
+}

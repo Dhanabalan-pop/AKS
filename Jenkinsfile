@@ -117,6 +117,12 @@ spec:
                 returnStdout: true).trim()
                 echo "${EKSNAME}"
                }
+               script {
+                EKSCLUSTERAUTOSCALERARN = sh (
+                script: 'terraform output EKSclusterautoscalerrole',
+                returnStdout: true).trim()
+                echo "${EKSNAMEEKSCLUSTERAUTOSCALERARN}"
+               }
              }      
             }
         }
@@ -138,6 +144,7 @@ spec:
                 sh "bash scripts/kubectl.sh $EKSNAME"
                 sh 'bash scripts/helm.sh'
                 sh 'bash scripts/kube-dashboard.sh'
+                sh "bash scripts/eks-autoscaler.sh $EKSCLUSTERAUTOSCALERARN"
              }      
             }
         }
