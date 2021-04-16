@@ -8,4 +8,4 @@ kubectl apply -f ./config/kubernetes/eks-admin-service-account.yaml
 #Fetching the eks-admin Secret
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}')
 #Attaching Load balancer for Kubernetes Dashboard
-kubectl patch svc/kubernetes-dashboard -n kubernetes-dashboard -p '{"spec":{"type": "loadbalancer"}}'
+kubectl patch svc/kubernetes-dashboard -n kubernetes-dashboard -p '{"spec":{"type": "LoadBalancer"}}'
