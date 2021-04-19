@@ -2,16 +2,16 @@
 KUBEVERSION="$(kubectl version --short | tail -1 | awk '{print $NF}' | awk -F . '{print $2}')"
 sed -i "s/CLUSTERNAME/$2/g" ./config/kubernetes/clusterautoscaler.yaml
 case "$KUBEVERSION" in
-   "17") sed -i "s/VERSION/1.17.3/g" ./config/kubernetes/clusterautoscaler.yaml
+   "17") sed -i "s/VERSION/v1.17.3/g" ./config/kubernetes/clusterautoscaler.yaml
    kubectl apply -f ./config/kubernetes/clusterautoscaler.yaml
    ;;
-   "18") sed -i "s/VERSION/1.18.3/g" ./config/kubernetes/clusterautoscaler.yaml
+   "18") sed -i "s/VERSION/v1.18.3/g" ./config/kubernetes/clusterautoscaler.yaml
    kubectl apply -f ./config/kubernetes/clusterautoscaler.yaml
    ;;
-   "19") sed -i "s/VERSION/1.19.1/g" ./config/kubernetes/clusterautoscaler.yaml
+   "19") sed -i "s/VERSION/v1.19.1/g" ./config/kubernetes/clusterautoscaler.yaml
    kubectl apply -f ./config/kubernetes/clusterautoscaler.yaml
    ;;
-   "20") sed -i "s/VERSION/1.20.0/g" ./config/kubernetes/clusterautoscaler.yaml
+   "20") sed -i "s/VERSION/v1.20.0/g" ./config/kubernetes/clusterautoscaler.yaml
    kubectl apply -f ./config/kubernetes/clusterautoscaler.yaml
    ;;
 esac
