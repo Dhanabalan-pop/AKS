@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deployment-datacenter
+spec:
+  selector:
+    matchLabels:
+      app: httpd_app_datacenter
+  replicas: 10
+  template:
+    metadata:
+      labels:
+        app: httpd_app_datacenter
+    spec:
+      containers:
+      - name: httpd-container-datacenter
+        image: httpd:latest
+        ports:
+        - containerPort: 80
+        resources:
+         requests:
+          cpu: 500m

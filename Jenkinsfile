@@ -144,7 +144,7 @@ spec:
                 sh "bash scripts/kubectl.sh $EKSNAME"
                 sh 'bash scripts/helm.sh'
                 sh 'bash scripts/kube-dashboard.sh'
-                sh "bash scripts/eks-autoscaler.sh $EKSCLUSTERAUTOSCALERARN"
+                sh "bash scripts/eks-autoscaler.sh $EKSCLUSTERAUTOSCALERARN $EKSNAME"
              }      
             }
         }
