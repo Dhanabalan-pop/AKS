@@ -19,4 +19,4 @@ kubectl patch deployments/prometheus-kube-state-metrics -n cms-container-monitor
 kubectl patch daemonset/prometheus-node-exporter -n cms-container-monitoring \
 -p '{"spec":{"template":{"metadata":{"labels":{"stack":"monitoring"}}}}}'
 #Load balancer configuration for scraping prometheus Metrics
-kubectl apply -f ./config/kubernetes/lbservice-promtailloki.yaml -n cms-container-monitoring
+#kubectl apply -f ./config/kubernetes/lbservice-promtailloki.yaml -n cms-container-monitoring

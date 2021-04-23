@@ -1,16 +1,44 @@
-kind: Ingress
 apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
   name: monitoring-ingress
+  annotations:
+   nginx.ingress.kubernetes.io/rewrite-target: /metrics
 spec:
   rules:
   - http:
       paths:
-      - path: /lazy/*
+      - path: /node
         backend:
-          serviceName: spring-boot-example
-          servicePort: 8080
-      - path: /v3/lazy
+          serviceName: prometheus-node-exporter
+          servicePort: 9100
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: monitoring-ingress
+  annotations:
+   nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /dashboard
         backend:
-          serviceName: spring-boot-example-v3
+          serviceName: kubernetes-dashboard
+          servicePort: 8443
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: monitoring-ingress
+  annotations:
+   nginx.ingress.kubernetes.io/rewrite-target: /metrics
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /kube
+        backend:
+          serviceName: prometheus-kube-state-metrics
           servicePort: 8080
