@@ -145,6 +145,7 @@ spec:
                 sh 'bash scripts/helm.sh'
                 sh 'bash scripts/kube-dashboard.sh'
                 sh "bash scripts/eks-autoscaler.sh $EKSCLUSTERAUTOSCALERARN $EKSNAME"
+                sh "bash scripts/ingress.sh"
              }      
             }
         }

@@ -1,0 +1,38 @@
+- job_name: "kubernetes-nodes"
+
+        # Default to scraping over https. If required, just disable this or change to
+        # `http`.
+        scheme: https
+
+        # This TLS & bearer token file config is used to connect to the actual scrape
+        # endpoints for cluster components. This is separate to discovery auth
+        # configuration because discovery & scraping are two separate concerns in
+        # Prometheus. The discovery auth config is automatic if Prometheus runs inside
+        # the cluster. Otherwise, more config options have to be provided within the
+        # <kubernetes_sd_config>.
+        tls_config:
+          ca_file: /etc/prometheus/kubernetes-ca.crt
+          # If your node certificates are self-signed or use a different CA to the
+          # master CA, then disable certificate verification below. Note that
+          # certificate verification is an integral part of a secure infrastructure
+          # so this should only be disabled in a controlled environment. You can
+          # disable certificate verification by uncommenting the line below.
+          #
+        bearer_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IkQxMUg2VjNaTmd6ZVhIeVVSZmZaYUttNkVnVkM0c09laXB3ZkpEZW8zNmsifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJla3MtYWRtaW4tdG9rZW4tNXBnejYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZWtzLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiODk2ZmRjYjAtMjdhMy00NTZlLTg2NDMtYmQ1YTY4MDhlMTVjIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVrcy1hZG1pbiJ9.Hi1EdL8eZZ3Ma9zCFOpPKU_GDe4Ohhwp27WmUAv-QaWnn06_USsFa9FO7SHy-Bo8a-2d3qJFjugdUiI5qbUUNn18oiLw1s5AuE8AAaDJkk6WxuHqxIgOHn15BLiw9C-DIzxacUQkmoQqzlFndRGewPzPLXeI9a7dvfeUnFbuXuYUwVQ_eCQC8CMHpVvKxkE12MNO6xLaAtMstD4bjDOBpgshE1VCCeQ5LFmcb7CYjmFtFDI5iM8EoxxwZRIODjVXxTHRABWhMlJDohF5BZkOK2tzVy4_SrV8hI922JpJ_MVktDOL0Ta7J5rVdPXiUmPZy1A0hVYcalnyu0ygdjs70A'
+
+        kubernetes_sd_configs:
+          - api_server: 'https://92BAE3EBBA5D3DC59608145FA9D84EF4.yl4.us-west-1.eks.amazonaws.com'
+            role: node
+            tls_config:
+              ca_file: /etc/prometheus/kubernetes-ca.crt
+            bearer_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IkQxMUg2VjNaTmd6ZVhIeVVSZmZaYUttNkVnVkM0c09laXB3ZkpEZW8zNmsifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJla3MtYWRtaW4tdG9rZW4tNXBnejYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZWtzLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiODk2ZmRjYjAtMjdhMy00NTZlLTg2NDMtYmQ1YTY4MDhlMTVjIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVrcy1hZG1pbiJ9.Hi1EdL8eZZ3Ma9zCFOpPKU_GDe4Ohhwp27WmUAv-QaWnn06_USsFa9FO7SHy-Bo8a-2d3qJFjugdUiI5qbUUNn18oiLw1s5AuE8AAaDJkk6WxuHqxIgOHn15BLiw9C-DIzxacUQkmoQqzlFndRGewPzPLXeI9a7dvfeUnFbuXuYUwVQ_eCQC8CMHpVvKxkE12MNO6xLaAtMstD4bjDOBpgshE1VCCeQ5LFmcb7CYjmFtFDI5iM8EoxxwZRIODjVXxTHRABWhMlJDohF5BZkOK2tzVy4_SrV8hI922JpJ_MVktDOL0Ta7J5rVdPXiUmPZy1A0hVYcalnyu0ygdjs70A'
+
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+          - target_label: __address__
+            replacement: kubernetes.default.svc:443
+          - source_labels: [__meta_kubernetes_node_name]
+            regex: (.+)
+            target_label: __metrics_path__
+            replacement: /api/v1/nodes/$1/proxy/metrics

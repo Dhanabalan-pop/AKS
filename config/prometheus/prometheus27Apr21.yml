@@ -1,0 +1,250 @@
+# my global config
+global:
+  scrape_interval:     1m # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 1m # Evaluate rules every 15 seconds. The default is every 1 minute.
+  scrape_timeout: 30s
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+       - localhost:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "/etc/prometheus/alert.rules"
+  - "/etc/prometheus/record.rules"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+
+  - job_name: kubctl-eks-metrics
+    scrape_interval: 60s
+    scrape_timeout: 15s
+    metrics_path: /metrics
+    honor_labels: true
+    static_configs:
+      - targets:
+        - a16e5b477305d4c7b9064e3669d5dc47-2079843651.us-west-1.elb.amazonaws.com:8080
+
+  - job_name: node-exporter-eks-cms-monitoring
+    scrape_interval: 60s
+    scrape_timeout: 15s
+    metrics_path: /metrics
+    honor_labels: true
+    static_configs:
+      - targets:
+        - a16e5b477305d4c7b9064e3669d5dc47-2079843651.us-west-1.elb.amazonaws.com:9100
+
+  
+  - job_name: rds-basic
+    scrape_interval: 60s
+    scrape_timeout: 15s
+    metrics_path: /basic
+    honor_labels: true
+    static_configs:
+      - targets:
+        - 35.224.44.23:9042
+  - job_name: rds-enhanced
+    scrape_interval: 60s
+    scrape_timeout: 15s
+    metrics_path: /enhanced
+    honor_labels: true
+    static_configs:
+      - targets:
+        - 35.224.44.23:9042
+  - job_name: yet-another-cloudwatch-exporter
+    scrape_interval: 300s
+    scrape_timeout: 15s
+    metrics_path: /metrics
+    honor_labels: true
+    static_configs:
+      - targets:
+        - 35.232.67.19:10000
+  - job_name: grok-exporter
+    scrape_interval: 300s
+    scrape_timeout: 15s
+    metrics_path: /metrics
+    honor_labels: true
+    static_configs:
+      - targets:
+        - 35.232.67.19:9144          
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'sidecar'
+    static_configs:
+      - targets: ['localhost:19090']
+
+  - job_name: 'aws_config_exporter'
+    scrape_interval: 300s
+    static_configs:
+      - targets: ['35.224.44.23:9170']
+
+  - job_name: 'node_exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9100']
+
+  - job_name: 'sql_server'
+    scrape_interval: 5m
+    static_configs:
+      - targets: ['172.31.24.121:9966']
+
+  - job_name: pm2-metrics
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['localhost:9209']
+
+  - job_name: 'aws_rds'
+    scrape_interval: 5s
+    static_configs:
+
+  - job_name: "nodeapplication"
+    scrape_interval: 30s
+    honor_labels: true
+    static_configs:
+      - targets: ["172.31.33.238:3000"]
+
+  - job_name: "topology"
+    scrape_interval: 5m
+    honor_labels: true
+    static_configs:
+      - targets: ["35.224.44.23:9150"]
+
+  - job_name: "awsconfig"
+    honor_timestamps: true
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+        - localhost:8083
+
+  - job_name: "nodes"
+
+    ec2_sd_configs:
+      - region: us-east-1
+        access_key: AKIA5ZKPGVEJY2D53W3T
+        secret_key: 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 
+        port: 9100
+        filters:
+          - name: tag:Platform
+            values:
+              - "Linux"
+          - name: tag:Environment
+            values:
+              - "PRD"
+      - region: us-east-1
+        access_key: AKIA5ZKPGVEJY2D53W3T
+        secret_key: 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
+        port: 9182
+        filters:
+          - name: tag:Platform
+            values:
+              - "Windows"
+          - name: tag:Environment
+            values:
+              - "PRD"                
+    relabel_configs:
+      - source_labels: ["__meta_ec2_instance_id"]
+        target_label: InstanceId
+      - source_labels: ["__meta_ec2_instance_state"]
+        target_label: InstanceState
+      - source_labels: ["__meta_ec2_instance_type"]
+        target_label: InstanceType
+      - source_labels: ["__meta_ec2_platform"]
+        target_label: Platform
+      - source_labels: ["__meta_ec2_private_ip"]
+        target_label: PrivateIp
+      - source_labels: ["__meta_ec2_public_ip"]
+        target_label: public_ip
+      - source_labels: ["__meta_ec2_tag_Name"]
+        target_label: Name
+      - source_labels: ["__meta_ec2_tag_ManagedBy"]
+        target_label: ManagedBy
+      - source_labels: ["__meta_ec2_tag_Environment"]
+        target_label: Environment
+      - source_labels: ["__meta_ec2_tag_SysName"]
+        target_label: SysName
+      - source_labels: ["__meta_ec2_tag_SysOwner"]
+        target_label: SysOwner
+      - source_labels: ["__meta_ec2_tag_TSM"]
+        target_label: TSM
+      - source_labels: ["__meta_ec2_tag_BusinessUnit"]
+        target_label: BusinessUnit
+      - source_labels: ["__meta_ec2_tag_Application"]
+        target_label: Application
+      - source_labels: ["__meta_ec2_tag_Department"]
+        target_label: Department
+      - source_labels: ["__meta_ec2_tag_Customer"]
+        target_label: Customer
+      - source_labels: ["__meta_ec2_tag_Type"]
+        target_label: Type
+  - job_name: "kubernetes-nodes"
+
+        # Default to scraping over https. If required, just disable this or change to
+        # `http`.
+    scheme: https
+
+        # This TLS & bearer token file config is used to connect to the actual scrape
+        # endpoints for cluster components. This is separate to discovery auth
+        # configuration because discovery & scraping are two separate concerns in
+        # Prometheus. The discovery auth config is automatic if Prometheus runs inside
+        # the cluster. Otherwise, more config options have to be provided within the
+        # <kubernetes_sd_config>.
+    tls_config:
+      #ca_file: /etc/prometheus/kubernetes-ca.crt
+      insecure_skip_verify: true
+          # If your node certificates are self-signed or use a different CA to the
+          # master CA, then disable certificate verification below. Note that
+          # certificate verification is an integral part of a secure infrastructure
+          # so this should only be disabled in a controlled environment. You can
+          # disable certificate verification by uncommenting the line below.
+          #
+    bearer_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5M3RTMEhYdkRfWl9tYi1rMlVfY2FqRnQteDROQ3plMHJCZHU3cWpZWlUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJla3MtYWRtaW4tdG9rZW4tNzlyMnMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZWtzLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMTg5MzU1YWMtZjFlMC00ZmE2LWI0MGYtNWE4YjZkODFkOGU0Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVrcy1hZG1pbiJ9.NDPeBToqHSox7U1A6Ad-8tWgaaoSbYC6fKsylzFMn2ruNHblA8OCKVUjycBIWOqTSEyVu1Q_wJaIVT0tTCJ8B-1jwghzY9vkkJ6KhI7NmFjQHUYShwrczIdDyN77KUO_SucM8mrwG79tklB-YTgwKzLIifmLfzhL0yGlzgpKnTzFof53AsxKrkzD39EDqZ1bfoCujHcL0MNF55doV-1qG72E4zJxAdqshVY6QOmwRDza3JIg_YT2oY9OoqtbXH3EpSIzLiT11AHCgF2KzjDHe2vGqROoq2W-EXOZKke0oxe2gI4Wop6neivq8WlZmujby1P_1I5_enBMyx-n79bdjQ'
+
+    kubernetes_sd_configs:
+      - api_server: 'https://92BAE3EBBA5D3DC59608145FA9D84EF4.yl4.us-west-1.eks.amazonaws.com'
+        role: node
+        tls_config:
+          #ca_file: /etc/prometheus/kubernetes-ca.crt
+          insecure_skip_verify: true
+        bearer_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk5M3RTMEhYdkRfWl9tYi1rMlVfY2FqRnQteDROQ3plMHJCZHU3cWpZWlUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJla3MtYWRtaW4tdG9rZW4tNzlyMnMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZWtzLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMTg5MzU1YWMtZjFlMC00ZmE2LWI0MGYtNWE4YjZkODFkOGU0Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVrcy1hZG1pbiJ9.NDPeBToqHSox7U1A6Ad-8tWgaaoSbYC6fKsylzFMn2ruNHblA8OCKVUjycBIWOqTSEyVu1Q_wJaIVT0tTCJ8B-1jwghzY9vkkJ6KhI7NmFjQHUYShwrczIdDyN77KUO_SucM8mrwG79tklB-YTgwKzLIifmLfzhL0yGlzgpKnTzFof53AsxKrkzD39EDqZ1bfoCujHcL0MNF55doV-1qG72E4zJxAdqshVY6QOmwRDza3JIg_YT2oY9OoqtbXH3EpSIzLiT11AHCgF2KzjDHe2vGqROoq2W-EXOZKke0oxe2gI4Wop6neivq8WlZmujby1P_1I5_enBMyx-n79bdjQ'
+
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: kubernetes.default.svc:443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/$1/proxy/metrics
+  scrape_configs:
+  - job_name: 'federate'
+    scrape_interval: 15s
+
+    honor_labels: true
+    metrics_path: '/federate'
+
+    params:
+      'match[]':
+        - '{job="kubernetes-*"}'
+
+    static_configs:
+      - targets:
+        - 'ae900253603734a6eaaecba27337a74d-1010127437.us-west-1.elb.amazonaws.com:9090'
+  
