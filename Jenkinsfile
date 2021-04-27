@@ -54,7 +54,7 @@ spec:
         booleanParam(name: 'existingvpc', defaultValue: true, description: 'Select the checkbox if you want to use existing vpc')
         string(name: 'VPCCIDR', defaultValue: '10.0.0.0/20', description: 'Enter CIDR in case of creating new VPC')
         text(name: 'PRIVATESUBNETCIDR', defaultValue: '["10.0.2.0/24","10.0.3.0/24","10.0.4.0/24"]', description: 'Enter CIDR for three private subnet')
-        text(name: 'EXISTINGSUBNETS', defaultValue: '["subnet-0024c97d","subnet-2fe2b763","subnet-98bd0af3"]', description: 'Enter existing subnet ID')
+        text(name: 'EXISTINGSUBNETS', defaultValue: '["subnet-0c0cc3f9ce44896ad","subnet-05f3194963280a40a","subnet-0dc802a472d559797"]', description: 'Enter existing subnet ID')
         string(name: 'PUBLICSUBNETCIDR', defaultValue: '["10.0.5.0/24","10.0.6.0/24","10.0.7.0/24"]', description: 'Enter CIDR for public subnet')
         string(name: 'MINNODE', defaultValue: '2', description: 'Enter minimum node count for EKS cluster')
         string(name: 'MAXNODE', defaultValue: '4', description: 'Enter maximum node count for EKS cluster')
