@@ -1,58 +1,42 @@
-data "aws_availability_zones" "azs" {}
+resource "azurerm_resource_group" "example" {
+  name     = "example-resources"
+  location = "West Europe"
+}
 
-module "iam" {
-  source             = "./modules/iam"
-  role_name          = var.eksclusterrole
-  workspace          = var.workspace
-  assume_role_policy = var.role
-  AmazonEKSClusterPolicy        = var.AmazonEKSClusterPolicy
-  AmazonEKSServicePolicy        = var.AmazonEKSServicePolicy
+resource "azurerm_kubernetes_cluster" "example" {
+  name                = "example-aks1"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  dns_prefix          = "exampleaks1"
+
+  default_node_pool {
+    name                = "default"
+    node_count          = 1
+    vm_size             = "Standard_D2_v2"
+    enable_auto_scaling = "true"
+    max_count           = 3
+    min_count           = 1
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+  addon_profile {
+    oms_agent {
+      enabled                    = true
+      log_analytics_workspace_id = "/subscriptions/8e485c9b-6527-441b-a8c3-51058f8daf6e/resourcegroups/rg-cmp-monitor/providers/microsoft.operationalinsights/workspaces/cmp-log-analytics-workspace"
+    }
+  }
+  tags = {
+    Environment = "Production"
+    Owner       = "CMP"
+  }
 }
-module "iam-node" {
-  source              = "./modules/iam-node"
-  key_name            = var.key_name
-  role_name           = var.eksnoderole
-  workspace           = var.workspace
-  AmazonEKSWorkerNodePolicy         = var.AmazonEKSWorkerNodePolicy
-  AmazonEKS_CNI_Policy         = var.AmazonEKS_CNI_Policy
-  AmazonEC2ContainerRegistryReadOnly         = var.AmazonEC2ContainerRegistryReadOnly
-  assume_role_policy1 = var.role1
+
+output "client_certificate" {
+  value = azurerm_kubernetes_cluster.example.kube_config.0.client_certificate
 }
-module "vpc" {
-  source             = "./modules/vpc"
-  vpc_name           = var.vpc_name
-  clustername        = var.eks_name
-  vpc_cidr           = var.vpc_cidr
-  ig_name            = var.ig_name
-  publicsubnet_name  = var.publicsubnet_name
-  public_subnets     = var.public_subnets_cidr
-  availability_zones = data.aws_availability_zones.azs.names
-  private_subnets    = var.private_subnets_cidr
-  nat_name           = var.nat_name
-  routetable_name    = var.routetable_name
-  workspace          = var.workspace
-  count              = var.existingvpc == "true" ? 0 : 1
-}
-module "eks" {
-  source           = "./modules/eks"
-  eks_role_arn     = module.iam.eksrolearn  
-  eks_name         = var.eks_name
-  private_subnets  = var.existingvpc == "false" ? module.vpc[0].private_subnets_id : var.existingsubnets
-  #private_subnets = module.vpc.private_subnets_id
-  eksnode_role_arn = module.iam-node.eksnoderolearn
-  eksnode_name     = var.eksnode_name
-  instance_types   = var.instance_types
-  minnode          = var.minnode
-  maxnode          = var.maxnode
-  desirednode      = var.desirednode
-  keyname          = module.iam-node.keyname
-  clusterautoscalerrole = var.clusterautoscalerrole
-  clusterautoscalerpolicy = var.clusterautoscalerpolicy
-  # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
-  # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
-  depends_on = [
-    module.iam-node.policy1,
-    module.iam-node.policy2,
-    module.iam-node.policy3,
-  ]
+
+output "kube_config" {
+  value = azurerm_kubernetes_cluster.example.kube_config_raw
 }

@@ -1,182 +1,98 @@
-variable "key_name" {
-  default = "eks1"
+//------------------------------------Service Principal---------------\\
+variable "azure_subscription_id" {
+  type        = string
+  default     = "8e485c9b-6527-441b-a8c3-51058f8daf6e"
+  description = "description"
 }
 
-variable "workspace" {
-  default = "default"
+variable "azure_client_id" {
+  type        = string
+  default     = "f28087fc-6a58-4c27-a657-352406c207df"
+  description = "description"
 }
 
-variable "aws_region" {
-  default = "us-west-1"
+variable "azure_client_secret" {
+  type        = string
+  default     = "V0-kUdG~a-o4ae64Qt~Ah0Pj6_VKo87P8m"
+  description = "description"
 }
 
-variable "eksclusterrole" {
-  default = "eksclusterrole"
+variable "azure_tenant_id" {
+  type        = string
+  default     = "f37bc64f-a244-47ff-b13f-d5439eef9b08"
+  description = "description"
+}
+//--------------------------------General Properties----------------\\
+variable "rgname" {
+  type    = string
+  default = "RG-CMP-DEMO-SQL"
+}
+variable "sqlservername" {
+  type    = string
+  default = "cpm-demo-sql1"
 }
 
-variable "eksnoderole" {
-  default = "eksnoderole"
+variable "location" {
+  type    = string
+  default = "West US"
 }
-
-variable "AmazonEKSClusterPolicy" {
-  default = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+//-----------------------------------SQL CONFIGURATIONS-------------------\\
+variable "username" {
+  type    = string
+  default = "adminuser"
 }
-
-variable "AmazonEKSServicePolicy" {
-  default = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+variable "password" {
+  type    = string
+  default = "M@gento12345"
 }
-
-variable "AmazonEKSWorkerNodePolicy" {
-  default = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+variable "dbname" {
+  type    = string
+  default = "cmpsqldemodb1"
 }
-
-variable "AmazonEKS_CNI_Policy" {
-  default = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+variable "dbsize" {
+  type    = string
+  default = "10"
 }
+variable "staccountname" {
+  type    = string
+  default = "cmpdemostaccount"
 
-variable "AmazonEC2ContainerRegistryReadOnly" {
-  default = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
-
-variable "role" {
-  default = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
+variable "firewallrules" {
+  type = list(any)
+  default = [
     {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "eks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
+      startip = "10.0.0.1"
+      endip   = "10.0.0.1"
+    },
+    {
+      startip = "10.0.0.2"
+      endip   = "10.0.0.2"
     }
   ]
 }
-POLICY
-}
-
-variable "role1" {
-  default = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-}
-
-//Networking
-variable "vpc_cidr" {
-  description = "The CIDR block of the vpc"
-  default     = "10.0.0.0/20"
-}
-
-variable "public_subnets_cidr" {
-  type        = list(any)
-  description = "The CIDR block for the public subnet"
-  default     = ["10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24"]
-}
-
-variable "private_subnets_cidr" {
-  type        = list(any)
-  description = "The CIDR block for the private subnet"
-  default     = ["10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24"]
-}
-
-variable "vpc_name" {
+//------------------------------------TAGS--------------------------\\
+variable "owner" {
   type        = string
-  description = "Enter the name for your VPC"
-  default     = "myvpc"
-
+  default     = "Ali Arslan"
+  description = "description"
 }
 
-variable "ig_name" {
+variable "Environment" {
   type        = string
-  description = "Enter the name for your Internet Gateway"
-  default     = "my-ig"
-
+  default     = "Dev"
+  description = "Enter storage account name"
 }
 
-variable "publicsubnet_name" {
+variable "Buisness_unit" {
   type        = string
-  description = "Enter the name for your public subnet"
-  default     = "mypublicsubnet"
+  default     = "HR"
+  description = "Enter storage account name"
 }
 
-variable "nat_name" {
+variable "Application" {
   type        = string
-  description = "Enter the name for your NAT Gateway"
-  default     = "mynatgateway"
-
+  default     = "DbServer"
+  description = "Enter storage account name"
 }
 
-variable "routetable_name" {
-  type        = string
-  description = "Enter the name for your route table"
-  default     = "myroutetable"
-}
-
-variable "eks_name" {
-  type        = string
-  description = "Enter the name for your EKS cluster"
-  default     = "myekscluster"
-}
-
-variable "eksnode_name" {
-  type        = string
-  description = "Enter name for EKS node group"
-  default     = "myeksnodegroup"
-}
-
-variable "instance_types" {
-  type        = list(string)
-  description = "Enter instance type"
-  default     = ["t3.medium"]
-}
-
-variable "existingvpc" {
-  type        = string
-  description = "Specify true if you want to use existing VPC"
-  default     = "true"
-}
-
-variable "existingsubnets" {
-  type        = list(any)
-  description = "Enter ID for the private subnet"
-  default     = ["subnet-0024c97d", "subnet-2fe2b763", "subnet-98bd0af3"]
-}
-
-variable "minnode" {
-  type        = string
-  description = "Enter Min node count for EKS cluster"
-  default     = "1"
-}
-
-variable "maxnode" {
-  type        = string
-  description = "Enter Max node count for EKS cluster"
-  default     = "2"
-}
-
-variable "desirednode" {
-  type        = string
-  description = "Enter desired node count for EKS cluster"
-  default     = "2"
-}
-variable "clusterautoscalerrole"{
-  type = string
-  description = "Enter the name for Cluster Autoscaler Role"
-  default = "EKSClusterAutoScalerRole"
-}
-variable "clusterautoscalerpolicy"{
-  type = string
-  description = "Enter the name for Cluster Autoscaler policy"
-  default = "EKSClusterAutoScalerPolicy"
-}
