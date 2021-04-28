@@ -47,7 +47,7 @@ spec:
         AZURE_CLIENT_ID='f28087fc-6a58-4c27-a657-352406c207df'
         AZURE_CLIENT_SECRET='V0-kUdG~a-o4ae64Qt~Ah0Pj6_VKo87P8m'
     }
-    parameters {
+ /*   parameters {
         string(name: 'EKSCLUSTERNAME', defaultValue: 'ekscluster', description: 'Enter Name for EKS Cluster')
         string(name: 'EKSNODENAME', defaultValue: 'eksnode', description: 'Enter name for EKS node group')
         string(name: 'TWORKSPACE', defaultValue: 'default', description: 'Enter Terraform workspace name')
@@ -61,22 +61,22 @@ spec:
         string(name: 'MINNODE', defaultValue: '2', description: 'Enter minimum node count for EKS cluster')
         string(name: 'MAXNODE', defaultValue: '4', description: 'Enter maximum node count for EKS cluster')
         string(name: 'DESIREDNODE', defaultValue: '2', description: 'Enter desired node count for EKS cluster')
-    }
+    }*/
     stages {
         stage('Git checkout') { 
             steps{
                 sh 'whoami'
-                git branch: 'master', credentialsId: '6558272a-3027-44cb-8bfc-a25b9cab9f45', url: 'https://github.com/Dhanabalan-pop/EKS.git'
+                git branch: 'main', credentialsId: '', url: 'https://github.com/aliarslan-graduate/AKS.git'
         }
         }
-         stage('checkov') { 
+  /*       stage('checkov') { 
             steps{
                 container('checkov'){
                 sh "checkov -d . -o junitxml > result.xml || true"
                 junit "result.xml"
         }
         }
-         }
+         }*/
         stage('Terraform Initialization') { 
                 when {
                 expression {
@@ -86,7 +86,7 @@ spec:
             steps{
                 container('terraform'){
                     sh 'terraform init'
-                    sh 'terraform workspace select $TWORKSPACE || terraform workspace new $TWORKSPACE'
+                  //  sh 'terraform workspace select $TWORKSPACE || terraform workspace new $TWORKSPACE'
         }
     }
         }
@@ -98,9 +98,10 @@ spec:
             }
             steps {
                 container('terraform'){
-                sh 'export TF_WORKSPACE=$TWORKSPACE'
-                sh 'terraform plan -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=$PUBLICSUBNETCIDR -var private_subnets_cidr=$PRIVATESUBNETCIDR -var workspace=$TWORKSPACE -var minnode=$MINNODE -var maxnode=$MAXNODE -var desirednode=$DESIREDNODE -out $TWORKSPACE.out'
-                sh 'terraform show -no-color $TWORKSPACE.out > $TWORKSPACE.txt'
+               sh 'terraform plan'
+               // sh 'export TF_WORKSPACE=$TWORKSPACE'
+               // sh 'terraform plan -var existingvpc=$existingvpc -var existingsubnets=$EXISTINGSUBNETS -var eks_name=$EKSCLUSTERNAME -var eksnode_name=$EKSNODENAME -var instance_types=$INSTANCETYPE -var vpc_cidr=$VPCCIDR -var public_subnets_cidr=$PUBLICSUBNETCIDR -var private_subnets_cidr=$PRIVATESUBNETCIDR -var workspace=$TWORKSPACE -var minnode=$MINNODE -var maxnode=$MAXNODE -var desirednode=$DESIREDNODE -out $TWORKSPACE.out'
+               // sh 'terraform show -no-color $TWORKSPACE.out > $TWORKSPACE.txt'
             }
             }
         }
@@ -112,7 +113,8 @@ spec:
             }
             steps{
                 container('terraform') {
-                sh 'terraform apply $TWORKSPACE.out'
+                sh 'terraform apply'    
+               /* sh 'terraform apply $TWORKSPACE.out'
                 script {
                 EKSNAME = sh (
                 script: 'terraform output EKSclustername',
@@ -124,11 +126,11 @@ spec:
                 script: 'terraform output EKSclusterautoscalerrole',
                 returnStdout: true).trim()
                 echo "${EKSCLUSTERAUTOSCALERARN}"
-               }
+               }*/
              }      
             }
         }
-        stage('Run Kubectl and Helm scripts') {
+  /*      stage('Run Kubectl and Helm scripts') {
             when {
                 expression {
                     params.destroy==false
@@ -167,3 +169,4 @@ spec:
         }
     }
 }
+*/
